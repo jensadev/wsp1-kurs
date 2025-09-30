@@ -1,22 +1,26 @@
 import express from "express"
 import nunjucks from "nunjucks"
+import morgan from "morgan"
+
+import indexRouter from "./routes/index.js"
 
 const app = express()
-
-app.use(express.static("public"))
 
 nunjucks.configure("views", {
     autoescape: true,
     express: app
 })
 
-app.get("/", (req, res) => {
-    res.render("index.njk", { title: "Hem", message: "Välkommen till startsidan!" })
-})
+app.use(express.static("public"))
+app.use(morgan("dev"))
+app.use("/", indexRouter)
 
-app.get("/about", (req, res) => {
-    res.render("about.njk", { title: "Om" })
-})
+function notFound(req, res, next) {
+  res.status(404)
+  res.send("404 Not Found")
+}
+
+app.use(notFound)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
