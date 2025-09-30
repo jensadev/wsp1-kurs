@@ -14,6 +14,10 @@ app.get("/", (req, res) => {
     res.render("index.njk", { title: "Hem", message: "Välkommen till startsidan!" })
 })
 
+app.get("/about", (req, res) => {
+    res.render("about.njk", { title: "Om" })
+})
+
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
